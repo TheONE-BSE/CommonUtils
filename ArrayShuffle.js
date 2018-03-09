@@ -2,7 +2,9 @@
 * 数组乱序算法
 * params: Array 
 */
-module.exports = function (originalArray) {
+module.exports = ArrayShuffle
+
+function ArrayShuffle(originalArray) {
 	for(let i = 0; i < originalArray.length; i++) {
         let pointer = originalArray.length - i - 1
         let rand = Math.floor(Math.random() * pointer)
@@ -13,3 +15,6 @@ module.exports = function (originalArray) {
     }
     return originalArray
 }
+
+console.log(ArrayShuffle([1,2,3,4,5,6,7,8,9,0]))
+
