@@ -1,6 +1,7 @@
 /*
 * 数组乱序算法
-* params: Array 
+* params: Array
+* Author: Kinice
 */
 module.exports = ArrayShuffle
 
