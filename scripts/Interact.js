@@ -18,4 +18,3 @@ export default (url = '') => {
         document.body.removeChild(frame)
     }, 50)
 }
-
