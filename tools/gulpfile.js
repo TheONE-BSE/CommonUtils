@@ -7,8 +7,8 @@ const gulp = require('gulp')
 const path = require('path')
 const less = require('gulp-less')
 const browserSync = require('browser-sync').create()
-const cleancss = require('gulp-cssnano')
 const reload = browserSync.reload
+const cleancss = require('gulp-cssnano')
 const autoprefixer = require('gulp-autoprefixer')
 const pump = require('pump')
 const uglify = require('gulp-uglify')
@@ -19,6 +19,7 @@ const changed = require('gulp-changed')
 const config = require('./config')
 const port = process.env.PORT || config.port
 
+// 将所需的资源path放到一起便于管理
 const paths = {
   style: {
     src: 'src/less/**/*.less',
@@ -34,9 +35,12 @@ const paths = {
   }
 }
 
+// 处理less的task
 function style(callback) {
+  // pump提供了中断pipe的callback
   return pump([
     gulp.src(path.join(__dirname, paths.style.src)),
+    // 开启sourcemap以方便调试
     sourcemaps.init(),
     less(),
     autoprefixer({
@@ -55,6 +59,7 @@ function style(callback) {
   ], callback)
 }
 
+// 处理js的task
 function script(callback) {
   return pump([
     gulp.src(path.join(__dirname, paths.script.src)),
@@ -66,6 +71,7 @@ function script(callback) {
   ], callback)
 }
 
+// 监测文件修改并调用相应task之后刷新页面
 function watch() {
   gulp.watch(path.join(__dirname, paths.style.src), style)
   gulp.watch(path.join(__dirname, paths.script.src), script)
@@ -75,6 +81,7 @@ function watch() {
   gulp.watch(path.join(__dirname, `${paths.view.dest}*.njk`)).on('change', reload)
 }
 
+// 使用nodemon启动node server，如果不含node就去掉
 function server() {
   nodemon({
     script: 'app.js'
@@ -88,7 +95,8 @@ exports.style = style
 exports.script = script
 exports.watch = watch
 
+// 顺序执行script和style
 let build = gulp.series(script, style)
 
+// 先build，再同步启动node server和开启文件监测
 gulp.task('default', gulp.series(build, gulp.parallel(server, watch)))
-
