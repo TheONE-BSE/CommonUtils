@@ -95,8 +95,8 @@ exports.style = style
 exports.script = script
 exports.watch = watch
 
-// 顺序执行script和style
-let build = gulp.series(script, style)
+// 同步执行script和style
+let build = gulp.parallel(script, style)
 
 // 先build，再同步启动node server和开启文件监测
 gulp.task('default', gulp.series(build, gulp.parallel(server, watch)))
